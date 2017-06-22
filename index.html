@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <script type="text/javascript" src="jquery-1.5.min.js"></script>
+      <script type="text/javascript" src="jquery-ui-1.8.9.custom.min.js"></script>
+      <title>ВАРИАНТ №2</title>
+      <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            var items = {};
+
+            $(".item").bind("dblclick", function(e) {
+                var qty = prompt("Укажите количество", 1)
+                if (qty == null) return false;
+                qty = Number(qty);
+                var elem = $(e.target).parent(".item");
+                var price = $(elem).data("price");
+                var cost = price * qty;
+                var id = $(elem).attr('id');
+                var link = $(elem).find("img").attr('src');
+                var creds = {
+                    price: price,
+                    qty: qty,
+                    cost: cost,
+                    img: link
+                }
+                items[id] = creds;
+                updateBasket();
+            });
+
+            function updateBasket(){
+                $("#basket").html('');
+                for(id in items){
+                    var pos = items[id];
+                    $("#basket").append(`
+                        <div class="bas_position" data-id="`+id+`">
+                            <img src="`+pos.img+`" style="float: left;">
+                            <div>
+                            <span>Количество: `+pos.qty+` шт.</span><br>
+                            <span>Цена: `+pos.price+` р.</span><br>
+                            <span>Итого: `+pos.cost+` р.</span><br>
+                            </div>
+                            <button class="delete">
+                            Удалить
+                            </button>
+                        </div>
+                        `)
+                }//*/
+            }
+
+            $(".delete").live("click", function(e){
+                var pos = $(e.target).parent(".bas_position")
+                var id = $(pos).data("id");
+                console.log(id)
+                $(e.target).remove();
+                delete items[id]
+                updateBasket();
+            });
+
+            $(".clear").live("click", function(){
+                items = {};
+                updateBasket();
+            });
+        });
+        
+      </script>
+   </head>
+   <!--
+      <frameset cols="600,*">
+          <frame src="catalog.html" name="MENU">
+          <frame src="shop.html" name="CONTENT">
+      </frameset>
+      -->
+   <body>
+      <div style="width:100%">
+         <div style="width:50%; float:left;">
+            <div class="main">
+               <p> ТОВАРЫ </p>
+            </div>
+            <div class="item_container">
+               <div class="item" id="i1" data-price="200">
+                  <img src="img/1.jpg"/>
+                  <label class="title">Майка 1</label>
+                  <label class="price">200 р.</label>
+               </div>
+               <div class="item" id="i2" data-price="240">
+                  <img src="img/2.jpg"/>
+                  <label class="title">Майка 2</label>
+                  <label class="price">240 р.</label>
+               </div>
+               <div class="item" id="i3" data-price="180">
+                  <img src="img/3.jpg"/>
+                  <label class="title">Майка 3</label>
+                  <label class="price">180 р.</label>
+               </div>
+               <div class="item" id="i4" data-price="300">
+                  <img src="img/4.jpg"/>
+                  <label class="title">Майка 4</label>
+                  <label class="price">300 р.</label>
+               </div>
+               <div class="item" id="i5" data-price="280">
+                  <img src="img/5.jpg"/>
+                  <label class="title">Майка 5</label>
+                  <label class="price">280 р.</label>
+               </div>
+               <div class="item" id="i6" data-price="260">
+                  <img src="img/6.jpg"/>
+                  <label class="title">Майка 6</label>
+                  <label class="price">260 р.</label>
+               </div>
+               <div class="item" id="i7" data-price="350">
+                  <img src="img/7.jpg"/>
+                  <label class="title">Майка 7</label>
+                  <label class="price">350 р.</label>
+               </div>
+               <div class="item" id="i8" data-price="330">
+                  <img src="img/8.jpg"/>
+                  <label class="title">Майка 8</label>
+                  <label class="price">330 р.</label>
+               </div>
+               <div class="item" id="i9" data-price="120">
+                  <img src="img/9.jpg"/>
+                  <label class="title">Майка 1</label>
+                  <label class="price">120 р.</label>
+               </div>
+               <div class="item" id="i10" data-price="220">
+                  <img src="img/10.jpg"/>
+                  <label class="title">Майка 10</label>
+                  <label class="price">220 р.</label>
+               </div>
+               <div class="clear"></div>
+            </div>
+         </div>
+         <div style="width:50%; float:left;">
+            <div class="main">
+               <p> КОРЗИНА <button class="clear">Очистить</button></p>
+            </div>
+            <div class="item_container" id="basket">
+
+            </div>
+         </div>
+      </div>
+   </body>
+</html>
